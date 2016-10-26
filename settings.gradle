@@ -1,1 +1,1 @@
-include ':app', ':library', ':baserecycleradapter', ':imageloader', ':imageloader-glide'
+include ':app', ':multipleGridRecyclerView', ':baserecycleradapter', ':imageloader', ':imageloader-glide'

@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.ruialonso.multiplegridrecyclerview_demo.MainActivity"
+    tools:context="com.gigigo.multiplegridrecyclerview_demo.MainActivity"
     >
 
   <include layout="@layout/content_main" android:id="@+id/content_main"/>

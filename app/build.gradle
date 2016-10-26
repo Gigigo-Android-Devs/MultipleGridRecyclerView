@@ -29,4 +29,6 @@ dependencies {
   compile rootProject.ext.modules.imageloaderGlide
 
   compile rootProject.ext.modules.multipleGridRecyclerView
+
+  testCompile rootProject.ext.testLibraries.junit
 }

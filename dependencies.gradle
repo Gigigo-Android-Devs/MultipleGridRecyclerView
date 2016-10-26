@@ -19,6 +19,6 @@ allprojects {
     modules = [imageloader             : project(":imageloader"),
                imageloaderGlide        : project(":imageloader-glide"),
                baserecycleradapter     : project(":baserecycleradapter"),
-               multipleGridRecyclerView: project(":library")]
+               multipleGridRecyclerView: project(":multipleGridRecyclerView")]
   }
 }
