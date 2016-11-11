@@ -9,8 +9,8 @@ android {
     minSdkVersion rootProject.ext.androidMinSdkVersion
     targetSdkVersion rootProject.ext.androidTargetSdkVersion
 
-    versionCode 1
-    versionName "1.0"
+    versionCode generateVersionCode()
+    versionName generateVersionName(1,2,0)
   }
 
   buildTypes {
@@ -26,7 +26,7 @@ dependencies {
   compile rootProject.ext.libraries.androidSupportV7
 
   compile rootProject.ext.libraries.floatingactionbutton
-  compile rootProject.ext.modules.imageloaderGlide
+  compile rootProject.ext.libraries.imageloaderGlide
 
   compile rootProject.ext.modules.multipleGridRecyclerView
 

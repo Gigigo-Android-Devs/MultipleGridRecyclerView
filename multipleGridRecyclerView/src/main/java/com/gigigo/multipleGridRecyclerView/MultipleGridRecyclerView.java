@@ -22,9 +22,10 @@ import java.util.List;
 
 public class MultipleGridRecyclerView extends FrameLayout {
   private final int DEFAULT_COLUMNS = 3;
-  private final float DEFAULT_ASPECT_RATIO = 0.77f;
+  private final float DEFAULT_ASPECT_RATIO = 0.705f;
   private final @DimenRes int DEFAULT_DIVIDER_SIZE_RESOURCE = R.dimen.divider_size;
   private final @ColorInt int DEFAULT_DIVIDER_COLOR = Color.WHITE;
+  private final @ColorInt int DEFAULT_BLANK_COLOR = Color.WHITE;
   private final @IdRes int DEFAULT_LOADING_VIEW_RESOURCE = R.id.loading_view_layout;
   private final @IdRes int DEFAULT_EMPTY_VIEW_RESOURCE = R.id.empty_view_layout;
 
@@ -42,10 +43,12 @@ public class MultipleGridRecyclerView extends FrameLayout {
   private float cellAspectRatio = DEFAULT_ASPECT_RATIO;
   private int dividerSize;
   private @ColorInt int dividerColor;
+  private @ColorInt int blankBackgroundColor;
   private @IdRes int loadingResourceId = DEFAULT_LOADING_VIEW_RESOURCE;
   private @IdRes int emptyResourceId = DEFAULT_EMPTY_VIEW_RESOURCE;
 
   private OnRefreshListener refreshListener;
+  private float clipToPaddingSize;
 
   public MultipleGridRecyclerView(Context context) {
     super(context);
@@ -84,7 +87,11 @@ public class MultipleGridRecyclerView extends FrameLayout {
           a.getFloat(R.styleable.MultipleGridRecyclerView_aspect_ratio, DEFAULT_ASPECT_RATIO);
       dividerSize = a.getDimensionPixelSize(R.styleable.MultipleGridRecyclerView_divider_size,
           getResources().getDimensionPixelSize(DEFAULT_DIVIDER_SIZE_RESOURCE));
-      dividerColor = a.getColor(R.styleable.MultipleGridRecyclerView_divider_color, DEFAULT_DIVIDER_COLOR);
+      dividerColor =
+          a.getColor(R.styleable.MultipleGridRecyclerView_divider_color, DEFAULT_DIVIDER_COLOR);
+
+      blankBackgroundColor =
+          a.getColor(R.styleable.MultipleGridRecyclerView_blank_background_color, DEFAULT_BLANK_COLOR);
 
       loadingResourceId = a.getResourceId(R.styleable.MultipleGridRecyclerView_loading_view_layout,
           DEFAULT_LOADING_VIEW_RESOURCE);
@@ -168,8 +175,7 @@ public class MultipleGridRecyclerView extends FrameLayout {
   }
 
   private void initItemDecoration() {
-    recyclerView.addItemDecoration(
-        new GridItemDividerDecoration(dividerSize, dividerColor));
+    recyclerView.addItemDecoration(new GridItemDividerDecoration(dividerSize, dividerColor, blankBackgroundColor));
   }
 
   public int getGridColumns() {
@@ -228,10 +234,6 @@ public class MultipleGridRecyclerView extends FrameLayout {
 
   }
 
-  public void setRefreshing(boolean refreshing) {
-    swipeRefreshLayout.setRefreshing(refreshing);
-  }
-
   public void setOnRefreshListener(OnRefreshListener refreshListener) {
     this.refreshListener = refreshListener;
   }
@@ -261,7 +263,7 @@ public class MultipleGridRecyclerView extends FrameLayout {
     showRecyclerView();
   }
 
-  public void loadData(List<?> data) {
+  public void addAll(List<?> data) {
     adapter.addAll(data);
 
     showRecyclerView();
@@ -297,12 +299,18 @@ public class MultipleGridRecyclerView extends FrameLayout {
   }
 
   public void showLoadingView(boolean isLoading) {
+    swipeRefreshLayout.setRefreshing(isLoading);
     loadingViewLayout.setVisibility((isLoading) ? VISIBLE : GONE);
   }
 
   public void showEmptyView() {
     recyclerViewLayout.setVisibility(GONE);
     emptyViewLayout.setVisibility(VISIBLE);
+  }
+
+  public void setClipToPaddingSize(int clipToPaddingSize) {
+    recyclerView.setClipToPadding(false);
+    recyclerView.setPadding(0, 0, 0, clipToPaddingSize);
   }
 
   public interface OnRefreshListener {

@@ -188,7 +188,6 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
           @Override public void run() {
             multipleGridRecyclerView.showLoadingView(false);
-            multipleGridRecyclerView.setRefreshing(false);
           }
         }, 3000);
       }
@@ -196,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
 
     bindListeners();
 
-    multipleGridRecyclerView.loadData(new ArrayList<>());
+    multipleGridRecyclerView.addAll(new ArrayList<>());
   }
 
   private void setAdapterDataViewHolders() {
@@ -228,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
     display.getSize(size);
     int width = size.x;
     int grid_columns = 3;
-    multipleGridRecyclerView.loadData(
+    multipleGridRecyclerView.addData(
         DataGenerator.generateRandomDataList(30));
   }
 

@@ -27,6 +27,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import com.gigigo.multiplegridrecyclerview.viewholder.CellBlankViewHolder;
 
 /**
  * A {@link RecyclerView.ItemDecoration} which draws dividers (along the right & bottom)
@@ -36,18 +37,23 @@ public class GridItemDividerDecoration extends RecyclerView.ItemDecoration {
 
   private final int dividerSize;
   private final Paint paint;
+  private final @ColorInt int blankBackgroundColor;
 
-  public GridItemDividerDecoration(int dividerSize, @ColorInt int dividerColor) {
+  public GridItemDividerDecoration(int dividerSize, @ColorInt int dividerColor,
+      @ColorInt int blankBackgroundColor) {
     this.dividerSize = dividerSize;
     paint = new Paint();
     paint.setColor(dividerColor);
     paint.setStyle(Paint.Style.FILL);
+
+    this.blankBackgroundColor = blankBackgroundColor;
   }
 
   public GridItemDividerDecoration(@NonNull Context context, @DimenRes int dividerSizeResId,
-      @ColorRes int dividerColorResId) {
+      @ColorRes int dividerColorResId, @ColorRes int blankBackgroundColorResId) {
     this(context.getResources().getDimensionPixelSize(dividerSizeResId),
-        ContextCompat.getColor(context, dividerColorResId));
+        ContextCompat.getColor(context, dividerColorResId),
+        ContextCompat.getColor(context, blankBackgroundColorResId));
   }
 
   @Override public void onDrawOver(Canvas canvas, RecyclerView parent, RecyclerView.State state) {
@@ -70,24 +76,28 @@ public class GridItemDividerDecoration extends RecyclerView.ItemDecoration {
       final ViewGroup.MarginLayoutParams lp =
           (ViewGroup.MarginLayoutParams) child.getLayoutParams();
 
-      final int bottomOffset = childBottom - child.getBottom() - lp.bottomMargin;
-      if (/*bottomOffset > 0 && */childBottom < bottomWithPadding) {
-        final int left = childLeft;
-        final int top = childBottom - bottomOffset;
-        final int right = childRight;
-        final int bottom = top + dividerSize;
+      if (!(parent.getChildViewHolder(child) instanceof CellBlankViewHolder)) {
+        final int bottomOffset = childBottom - child.getBottom() - lp.bottomMargin;
+        if (/*bottomOffset > 0 && */childBottom < bottomWithPadding) {
+          final int left = childLeft;
+          final int top = childBottom - bottomOffset;
+          final int right = childRight;
+          final int bottom = top + dividerSize;
 
-        canvas.drawRect(left, top, right, bottom, paint);
-      }
+          canvas.drawRect(left, top, right, bottom, paint);
+        }
 
-      final int rightOffset = childRight - child.getRight() - lp.rightMargin;
-      if (/*rightOffset > 0 && */childRight < rightWithPadding) {
-        final int left = childRight - rightOffset;
-        final int top = childTop;
-        final int right = left + dividerSize;
-        final int bottom = childBottom;
+        final int rightOffset = childRight - child.getRight() - lp.rightMargin;
+        if (/*rightOffset > 0 && */childRight < rightWithPadding) {
+          final int left = childRight - rightOffset;
+          final int top = childTop;
+          final int right = left + dividerSize;
+          final int bottom = childBottom;
 
-        canvas.drawRect(left, top, right, bottom, paint);
+          canvas.drawRect(left, top, right, bottom, paint);
+        }
+      } else {
+        child.setBackgroundColor(this.blankBackgroundColor);
       }
     }
   }

@@ -8,8 +8,8 @@ android {
     minSdkVersion rootProject.ext.androidMinSdkVersion
     targetSdkVersion rootProject.ext.androidTargetSdkVersion
 
-    versionCode 2
-    versionName "2.0"
+    versionCode generateVersionCode()
+    versionName generateVersionName(2,1,0)
   }
 
   buildTypes {
@@ -26,6 +26,6 @@ dependencies {
   compile rootProject.ext.libraries.androidSupportDesign
   compile rootProject.ext.libraries.recyclerViewV7
 
-  compile rootProject.ext.modules.baserecycleradapter
+  compile rootProject.ext.libraries.baserecycleradapter
 
 }
