@@ -1,16 +1,15 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 
 android {
   compileSdkVersion rootProject.ext.androidCompileSdkVersion
   buildToolsVersion rootProject.ext.androidBuildToolsVersion
 
   defaultConfig {
-    applicationId "com.gigigo.multiplegridrecyclerview_demo"
     minSdkVersion rootProject.ext.androidMinSdkVersion
     targetSdkVersion rootProject.ext.androidTargetSdkVersion
 
     versionCode generateVersionCode()
-    versionName generateVersionName(1,2,0)
+    versionName generateVersionName(2,1,0)
   }
 
   buildTypes {
@@ -24,11 +23,9 @@ android {
 dependencies {
   compile fileTree(dir: 'libs', include: ['*.jar'])
   compile rootProject.ext.libraries.androidSupportV7
+  compile rootProject.ext.libraries.androidSupportDesign
+  compile rootProject.ext.libraries.recyclerViewV7
 
-  compile rootProject.ext.libraries.floatingactionbutton
-  compile rootProject.ext.libraries.imageloaderGlide
+  compile rootProject.ext.libraries.baserecycleradapter
 
-  compile rootProject.ext.modules.multipleGridRecyclerView
-
-  testCompile rootProject.ext.testLibraries.junit
 }
