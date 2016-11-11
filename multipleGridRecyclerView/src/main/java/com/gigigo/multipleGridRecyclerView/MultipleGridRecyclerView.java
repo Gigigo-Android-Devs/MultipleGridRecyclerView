@@ -313,6 +313,10 @@ public class MultipleGridRecyclerView extends FrameLayout {
     recyclerView.setPadding(0, 0, 0, clipToPaddingSize);
   }
 
+  public void scrollToTop() {
+    layoutManager.scrollToPosition(0);
+  }
+
   public interface OnRefreshListener {
     void onRefresh();
   }
