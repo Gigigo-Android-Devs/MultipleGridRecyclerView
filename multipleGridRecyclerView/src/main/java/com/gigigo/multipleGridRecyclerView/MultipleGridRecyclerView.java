@@ -13,11 +13,14 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import com.gigigo.baserecycleradapter.adapter.BaseRecyclerAdapter;
 import com.gigigo.baserecycleradapter.viewholder.BaseViewHolder;
+import com.gigigo.baserecycleradapter.viewholder.BaseViewHolderFactory;
 import com.gigigo.multiplegridrecyclerview.decoration.GridItemDividerDecoration;
 import com.gigigo.multiplegridrecyclerview.entities.Cell;
 import com.gigigo.multiplegridrecyclerview.layoutManager.SpannedGridLayoutManager;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MultipleGridRecyclerView extends FrameLayout {
@@ -37,6 +40,7 @@ public class MultipleGridRecyclerView extends FrameLayout {
   private SwipeRefreshLayout swipeRefreshLayout;
   private RecyclerView recyclerView;
   private BaseRecyclerAdapter adapter;
+  private List<Class<? extends BaseViewHolder>> undecoratedClassViewHolder;
   private RecyclerView.LayoutManager layoutManager;
 
   private int gridColumns = DEFAULT_COLUMNS;
@@ -142,9 +146,18 @@ public class MultipleGridRecyclerView extends FrameLayout {
     });
   }
 
+  public void setAdapterViewHolderFactory(BaseViewHolderFactory baseViewHolderFactory) {
+    adapter = new BaseRecyclerAdapter(baseViewHolderFactory);
+    recyclerView.setAdapter(adapter);
+  }
+
   public void setAdapterDataViewHolder(Class valueClass,
       Class<? extends BaseViewHolder> viewHolder) {
     adapter.bind(valueClass, viewHolder);
+  }
+
+  public void setUndecoratedViewHolder(Class<? extends BaseViewHolder> viewHolder) {
+    undecoratedClassViewHolder.add(viewHolder);
   }
 
   private void initMultipleGridLayoutManager() {
@@ -175,7 +188,8 @@ public class MultipleGridRecyclerView extends FrameLayout {
   }
 
   private void initItemDecoration() {
-    recyclerView.addItemDecoration(new GridItemDividerDecoration(dividerSize, dividerColor, blankBackgroundColor));
+    undecoratedClassViewHolder = new ArrayList<>();
+    recyclerView.addItemDecoration(new GridItemDividerDecoration(dividerSize, dividerColor, blankBackgroundColor, undecoratedClassViewHolder));
   }
 
   public int getGridColumns() {
