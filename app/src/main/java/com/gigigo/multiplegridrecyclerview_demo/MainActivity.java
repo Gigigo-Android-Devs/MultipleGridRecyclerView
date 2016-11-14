@@ -8,16 +8,22 @@ import android.view.Display;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.gigigo.baserecycleradapter.viewholder.BaseViewHolder;
+import com.gigigo.baserecycleradapter.viewholder.BaseViewHolderFactory;
 import com.gigigo.multiplegridrecyclerview.MultipleGridRecyclerView;
-import com.gigigo.multiplegridrecyclerview_demo.recyclerview.CellImageViewHolder;
 import com.gigigo.multiplegridrecyclerview_demo.recyclerview.CellImageWidget;
-import com.gigigo.multiplegridrecyclerview_demo.recyclerview.ImageViewHolder;
 import com.gigigo.multiplegridrecyclerview_demo.recyclerview.ImageWidget;
-import com.gigigo.multiplegridrecyclerview_demo.recyclerview.TextViewHolder;
 import com.gigigo.multiplegridrecyclerview_demo.recyclerview.TextWidget;
+import com.gigigo.multiplegridrecyclerview_demo.recyclerview.factory.SampleViewHolderFactory;
+import com.gigigo.multiplegridrecyclerview_demo.recyclerview.viewholders.CellImageViewHolder;
+import com.gigigo.multiplegridrecyclerview_demo.recyclerview.viewholders.ImageViewHolder;
+import com.gigigo.multiplegridrecyclerview_demo.recyclerview.viewholders.TextViewHolder;
+import com.gigigo.ui.imageloader.ImageLoader;
+import com.gigigo.ui.imageloader_glide.GlideImageLoaderImp;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -41,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
   private MultipleGridRecyclerView multipleGridRecyclerView;
   private View emptyView;
   private View loadingView;
+  public ImageLoader imageLoader;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -179,7 +186,15 @@ public class MainActivity extends AppCompatActivity {
     multipleGridRecyclerView.setEmptyViewLayout(emptyView);
     multipleGridRecyclerView.setLoadingViewLayout(loadingView);
 
+    RequestManager requestManager = Glide.with(this);
+    imageLoader = new GlideImageLoaderImp(requestManager);
+
+    BaseViewHolderFactory adapterFactory = new SampleViewHolderFactory(this, imageLoader);
+    multipleGridRecyclerView.setAdapterViewHolderFactory(adapterFactory);
+
     setAdapterDataViewHolders();
+
+    multipleGridRecyclerView.setUndecoratedViewHolder(ImageViewHolder.class);
 
     multipleGridRecyclerView.setOnRefreshListener(new MultipleGridRecyclerView.OnRefreshListener() {
       @Override public void onRefresh() {
@@ -227,8 +242,7 @@ public class MainActivity extends AppCompatActivity {
     display.getSize(size);
     int width = size.x;
     int grid_columns = 3;
-    multipleGridRecyclerView.addData(
-        DataGenerator.generateRandomDataList(30));
+    multipleGridRecyclerView.addData(DataGenerator.generateRandomDataList(30));
   }
 
   private void addCellImageData(int column, int row) {
@@ -292,21 +306,21 @@ public class MainActivity extends AppCompatActivity {
   private void bindListeners() {
     multipleGridRecyclerView.setItemClickListener(new BaseViewHolder.OnItemClickListener() {
       @Override public void onItemClick(int position, View view) {
-        Toast.makeText(view.getContext(), "Clicked position: " + position,
-            Toast.LENGTH_SHORT).show();
+        Toast.makeText(view.getContext(), "Clicked position: " + position, Toast.LENGTH_SHORT)
+            .show();
       }
     });
     multipleGridRecyclerView.setItemLongClickListener(new BaseViewHolder.OnItemLongClickListener() {
       @Override public boolean onItemLongClicked(int position, View view) {
-        Toast.makeText(view.getContext(), "Long clicked position: " + position,
-            Toast.LENGTH_SHORT).show();
+        Toast.makeText(view.getContext(), "Long clicked position: " + position, Toast.LENGTH_SHORT)
+            .show();
         return false;
       }
     });
     multipleGridRecyclerView.setItemDragListener(new BaseViewHolder.OnItemDragListener() {
       @Override public boolean OnItemDragged(int position, View view) {
-        Toast.makeText(view.getContext(), "Dragged position: " + position,
-            Toast.LENGTH_SHORT).show();
+        Toast.makeText(view.getContext(), "Dragged position: " + position, Toast.LENGTH_SHORT)
+            .show();
         return false;
       }
     });

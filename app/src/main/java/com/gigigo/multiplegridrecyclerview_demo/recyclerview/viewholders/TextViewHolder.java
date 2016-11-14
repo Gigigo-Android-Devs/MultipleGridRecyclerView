@@ -1,28 +1,21 @@
-package com.gigigo.multiplegridrecyclerview_demo.recyclerview;
+package com.gigigo.multiplegridrecyclerview_demo.recyclerview.viewholders;
 
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestManager;
 import com.gigigo.baserecycleradapter.viewholder.BaseViewHolder;
-import com.gigigo.ui.imageloader.ImageLoader;
-import com.gigigo.ui.imageloader_glide.GlideImageLoaderImp;
 import com.gigigo.multiplegridrecyclerview_demo.R;
+import com.gigigo.multiplegridrecyclerview_demo.recyclerview.TextWidget;
 
-public class CellImageViewHolder extends BaseViewHolder<CellImageWidget> {
+public class TextViewHolder extends BaseViewHolder<TextWidget> {
 
-  private ImageLoader imageLoader;
-  private ImageView imageView;
+  private TextView textView;
 
-  public CellImageViewHolder(Context context, ViewGroup parent) {
-    super(context, parent, R.layout.content_item_image_element);
-
-    RequestManager requestManager = Glide.with(parent.getContext());
-    this.imageLoader = new GlideImageLoaderImp(requestManager);
-    imageView = (ImageView) this.itemView.findViewById(R.id.image_view);
+  public TextViewHolder(Context context, ViewGroup parent) {
+    super(context, parent, R.layout.content_item_text_element);
+    textView = (TextView) this.itemView.findViewById(R.id.text_view);
 
     bindListeners();
   }
@@ -50,7 +43,13 @@ public class CellImageViewHolder extends BaseViewHolder<CellImageWidget> {
     });
   }
 
-  @Override public void bindTo(CellImageWidget item, int position) {
-    imageLoader.load(item.getData().getImageUrl(), imageView, R.drawable.placeholder);
+  @Override public void bindTo(TextWidget item, int position) {
+    textView.setText(item.getText());
+    if(position % 2 == 0) {
+      itemView.setBackgroundResource(R.color.colorPrimary);
+    }
+    else{
+      itemView.setBackgroundResource(R.color.colorPrimaryDark);
+    }
   }
 }
