@@ -27,7 +27,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import com.gigigo.baserecycleradapter.viewholder.BaseViewHolder;
 import com.gigigo.multiplegridrecyclerview.viewholder.CellBlankViewHolder;
+import java.util.List;
 
 /**
  * A {@link RecyclerView.ItemDecoration} which draws dividers (along the right & bottom)
@@ -39,21 +41,24 @@ public class GridItemDividerDecoration extends RecyclerView.ItemDecoration {
   private final Paint paint;
   private final @ColorInt int blankBackgroundColor;
 
+  private List<Class<? extends BaseViewHolder>> undecoratedClassTypes;
+
   public GridItemDividerDecoration(int dividerSize, @ColorInt int dividerColor,
-      @ColorInt int blankBackgroundColor) {
+      @ColorInt int blankBackgroundColor, List<Class<? extends BaseViewHolder>> undecoratedClassViewHolder) {
     this.dividerSize = dividerSize;
     paint = new Paint();
     paint.setColor(dividerColor);
     paint.setStyle(Paint.Style.FILL);
 
     this.blankBackgroundColor = blankBackgroundColor;
+    this.undecoratedClassTypes = undecoratedClassViewHolder;
   }
 
   public GridItemDividerDecoration(@NonNull Context context, @DimenRes int dividerSizeResId,
-      @ColorRes int dividerColorResId, @ColorRes int blankBackgroundColorResId) {
+      @ColorRes int dividerColorResId, @ColorRes int blankBackgroundColorResId, List<Class<? extends BaseViewHolder>> undecoratedClassViewHolder) {
     this(context.getResources().getDimensionPixelSize(dividerSizeResId),
         ContextCompat.getColor(context, dividerColorResId),
-        ContextCompat.getColor(context, blankBackgroundColorResId));
+        ContextCompat.getColor(context, blankBackgroundColorResId), undecoratedClassViewHolder);
   }
 
   @Override public void onDrawOver(Canvas canvas, RecyclerView parent, RecyclerView.State state) {
@@ -100,5 +105,15 @@ public class GridItemDividerDecoration extends RecyclerView.ItemDecoration {
         child.setBackgroundColor(this.blankBackgroundColor);
       }
     }
+  }
+
+  private boolean isUndecoratedViewHolder(Class valueClass) {
+    boolean undecorated = true;
+    for(int i=0; undecorated && i<undecoratedClassTypes.size(); i++) {
+      if(undecoratedClassTypes.get(i) == valueClass)
+       undecorated = false;
+    }
+
+    return undecorated;
   }
 }
