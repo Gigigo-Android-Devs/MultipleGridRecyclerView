@@ -81,7 +81,7 @@ public class GridItemDividerDecoration extends RecyclerView.ItemDecoration {
       final ViewGroup.MarginLayoutParams lp =
           (ViewGroup.MarginLayoutParams) child.getLayoutParams();
 
-      if (!(parent.getChildViewHolder(child) instanceof CellBlankViewHolder)) {
+      if (isUndecoratedViewHolder(parent.getChildViewHolder(child).getClass())) {
         final int bottomOffset = childBottom - child.getBottom() - lp.bottomMargin;
         if (/*bottomOffset > 0 && */childBottom < bottomWithPadding) {
           final int left = childLeft;

@@ -329,6 +329,7 @@ public class MultipleGridRecyclerView extends FrameLayout {
 
   public void scrollToTop() {
     layoutManager.scrollToPosition(0);
+
   }
 
   public interface OnRefreshListener {
