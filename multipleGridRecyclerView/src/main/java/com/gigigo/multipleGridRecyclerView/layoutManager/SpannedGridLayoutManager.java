@@ -258,11 +258,13 @@ public class SpannedGridLayoutManager extends RecyclerView.LayoutManager {
     public void scrollToPosition(int position) {
         if (position >= getItemCount()) position = getItemCount() - 1;
 
-        firstVisibleRow = getRowIndex(position);
-        resetVisibleItemTracking();
-        forceClearOffsets = true;
-        removeAllViews();
-        requestLayout();
+        if(position != -1) {
+            firstVisibleRow = getRowIndex(position);
+            resetVisibleItemTracking();
+            forceClearOffsets = true;
+            removeAllViews();
+            requestLayout();
+        }
     }
 
     @Override
@@ -425,6 +427,7 @@ public class SpannedGridLayoutManager extends RecyclerView.LayoutManager {
     }
 
     private int getRowIndex(final int position) {
+        if(cells == null) return -1;
         return position < cells.size() ? cells.get(position).row : -1;
     }
 
