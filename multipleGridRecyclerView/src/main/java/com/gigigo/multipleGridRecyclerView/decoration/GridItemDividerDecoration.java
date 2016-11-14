@@ -94,13 +94,22 @@ public class GridItemDividerDecoration extends RecyclerView.ItemDecoration {
 
         final int rightOffset = childRight - child.getRight() - lp.rightMargin;
         if (/*rightOffset > 0 && */childRight < rightWithPadding) {
-          final int left = childRight - rightOffset;
+          final int left = childRight - rightOffset- dividerSize/2;
           final int top = childTop;
           final int right = left + dividerSize;
           final int bottom = childBottom;
 
           canvas.drawRect(left, top, right, bottom, paint);
         }
+        else {
+          final int left = childLeft - dividerSize/2;
+          final int top = childTop;
+          final int right = left + dividerSize;
+          final int bottom = childBottom;
+
+          canvas.drawRect(left, top, right, bottom, paint);
+        }
+
       } else {
         child.setBackgroundColor(this.blankBackgroundColor);
       }
