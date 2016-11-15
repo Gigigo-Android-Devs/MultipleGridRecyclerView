@@ -64,7 +64,6 @@ or
 - bug adding first element, don't renderize it until second element added
 
 ### Based on
-* [EasyRecyclerAdapter] to perform Adapters and ViewHolder factory
 * [Plaid] for SpannedGridLayoutManager
 
 License
