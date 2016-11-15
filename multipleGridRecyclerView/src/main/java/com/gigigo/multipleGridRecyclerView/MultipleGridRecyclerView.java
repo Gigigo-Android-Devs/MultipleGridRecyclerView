@@ -31,9 +31,11 @@ public class MultipleGridRecyclerView extends FrameLayout {
   private final @ColorInt int DEFAULT_BLANK_COLOR = Color.WHITE;
   private final @IdRes int DEFAULT_LOADING_VIEW_RESOURCE = R.id.loading_view_layout;
   private final @IdRes int DEFAULT_EMPTY_VIEW_RESOURCE = R.id.empty_view_layout;
+  private final @IdRes int DEFAULT_ERROR_VIEW_RESOURCE = R.id.error_view_layout;
 
   private View view;
   private View emptyViewLayout;
+  private View errorViewLayout;
   private View recyclerViewLayout;
   private View loadingViewLayout;
 
@@ -50,9 +52,9 @@ public class MultipleGridRecyclerView extends FrameLayout {
   private @ColorInt int blankBackgroundColor;
   private @IdRes int loadingResourceId = DEFAULT_LOADING_VIEW_RESOURCE;
   private @IdRes int emptyResourceId = DEFAULT_EMPTY_VIEW_RESOURCE;
+  private @IdRes int errorResourceId = DEFAULT_ERROR_VIEW_RESOURCE;
 
   private OnRefreshListener refreshListener;
-  private float clipToPaddingSize;
 
   public MultipleGridRecyclerView(Context context) {
     super(context);
@@ -101,6 +103,8 @@ public class MultipleGridRecyclerView extends FrameLayout {
           DEFAULT_LOADING_VIEW_RESOURCE);
       emptyResourceId = a.getResourceId(R.styleable.MultipleGridRecyclerView_empty_view_layout,
           DEFAULT_EMPTY_VIEW_RESOURCE);
+      errorResourceId = a.getResourceId(R.styleable.MultipleGridRecyclerView_error_view_layout,
+          DEFAULT_ERROR_VIEW_RESOURCE);
     } finally {
       a.recycle();
     }
@@ -114,6 +118,7 @@ public class MultipleGridRecyclerView extends FrameLayout {
     recyclerViewLayout = view.findViewById(R.id.recycler_view_layout);
     loadingViewLayout = view.findViewById(loadingResourceId);
     emptyViewLayout = view.findViewById(emptyResourceId);
+    errorViewLayout = view.findViewById(errorResourceId);
     recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
 
     recyclerView.setAdapter(adapter);
@@ -217,35 +222,27 @@ public class MultipleGridRecyclerView extends FrameLayout {
   }
 
   public void setEmptyViewLayout(View emptyViewLayout) {
-    this.emptyViewLayout.setVisibility(GONE);
+    detachViewFromParent(this.emptyViewLayout);
     if (emptyViewLayout != null) {
       this.emptyViewLayout = emptyViewLayout;
       this.emptyViewLayout.setVisibility(VISIBLE);
     }
   }
 
-  public void setEmptyViewLayoutByIdRes(@IdRes int emptyViewLayoutIdRes) {
-
-  }
-
-  public void setEmptyViewLayoutByLayoutRes(@LayoutRes int emptyViewLayoutLayoutRes) {
-
+  public void setErrorViewLayout(View errorViewLayout) {
+    detachViewFromParent(this.errorViewLayout);
+    if (errorViewLayout != null) {
+      this.errorViewLayout = errorViewLayout;
+      this.errorViewLayout.setVisibility(GONE);
+    }
   }
 
   public void setLoadingViewLayout(View loadingViewLayout) {
-    this.loadingViewLayout.setVisibility(GONE);
+    detachViewFromParent(this.loadingViewLayout);
     if (loadingViewLayout != null) {
       this.loadingViewLayout = loadingViewLayout;
       this.loadingViewLayout.setVisibility(GONE);
     }
-  }
-
-  public void setLoadingViewLayoutIdRes(@IdRes int loadingViewLayoutIdRes) {
-
-  }
-
-  public void setLoadingViewLayoutByLayoutRes(@LayoutRes int loadingViewLayoutLayoutRes) {
-
   }
 
   public void setOnRefreshListener(OnRefreshListener refreshListener) {
@@ -267,43 +264,36 @@ public class MultipleGridRecyclerView extends FrameLayout {
 
   public void add(Object item) {
     adapter.add(item);
-
     showRecyclerView();
   }
 
   public void addAt(Object item, int position) {
     adapter.addAt(item, position);
-
     showRecyclerView();
   }
 
   public void addAll(List<?> data) {
     adapter.addAll(data);
-
     showRecyclerView();
   }
 
   public void addData(List<?> data) {
     adapter.append(data);
-
     showRecyclerView();
   }
 
   public boolean remove(Object item) {
     showRecyclerView();
-
     return adapter.remove(item);
   }
 
   public boolean removeAt(int position) {
     showRecyclerView();
-
     return adapter.removeAt(position);
   }
 
   public void clearData() {
     adapter.clear();
-
     showEmptyView();
   }
 
@@ -319,7 +309,14 @@ public class MultipleGridRecyclerView extends FrameLayout {
 
   public void showEmptyView() {
     recyclerViewLayout.setVisibility(GONE);
+    errorViewLayout.setVisibility(GONE);
     emptyViewLayout.setVisibility(VISIBLE);
+  }
+
+  public void showErrorView() {
+    recyclerViewLayout.setVisibility(GONE);
+    emptyViewLayout.setVisibility(GONE);
+    errorViewLayout.setVisibility(VISIBLE);
   }
 
   public void setClipToPaddingSize(int clipToPaddingSize) {
@@ -329,7 +326,6 @@ public class MultipleGridRecyclerView extends FrameLayout {
 
   public void scrollToTop() {
     layoutManager.scrollToPosition(0);
-
   }
 
   public interface OnRefreshListener {
