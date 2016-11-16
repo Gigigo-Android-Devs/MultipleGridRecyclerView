@@ -1,4 +1,4 @@
-package com.gigigo.multiplegridrecyclerview.entities;
+package com.gigigo.multiplegridrecyclerview;
 
 public class Cell<T> {
   private T data;
