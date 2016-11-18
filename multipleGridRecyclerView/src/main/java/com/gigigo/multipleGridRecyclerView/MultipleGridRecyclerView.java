@@ -225,7 +225,7 @@ public class MultipleGridRecyclerView extends FrameLayout {
     detachViewFromParent(this.emptyViewLayout);
     if (emptyViewLayout != null) {
       this.emptyViewLayout = emptyViewLayout;
-      this.emptyViewLayout.setVisibility(VISIBLE);
+      this.emptyViewLayout.setVisibility(GONE);
     }
   }
 
