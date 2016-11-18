@@ -16,6 +16,7 @@ import com.gigigo.baserecycleradapter.adapter.BaseRecyclerAdapter;
 import com.gigigo.baserecycleradapter.viewholder.BaseViewHolder;
 import com.gigigo.baserecycleradapter.viewholder.BaseViewHolderFactory;
 import com.gigigo.multiplegridrecyclerview.decoration.GridItemDividerDecoration;
+import com.gigigo.multiplegridrecyclerview.entities.Cell;
 import com.gigigo.multiplegridrecyclerview.layoutManager.SpannedGridLayoutManager;
 import java.util.ArrayList;
 import java.util.List;
@@ -222,7 +223,7 @@ public class MultipleGridRecyclerView extends FrameLayout {
     detachViewFromParent(this.emptyViewLayout);
     if (emptyViewLayout != null) {
       this.emptyViewLayout = emptyViewLayout;
-      this.emptyViewLayout.setVisibility(VISIBLE);
+      this.emptyViewLayout.setVisibility(GONE);
     }
   }
 

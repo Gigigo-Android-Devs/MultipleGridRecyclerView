@@ -9,6 +9,7 @@
       android:id="@+id/empty_view_layout"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
+      android:visibility="gone"
       />
   <include
       layout="@layout/error_view_layout"
