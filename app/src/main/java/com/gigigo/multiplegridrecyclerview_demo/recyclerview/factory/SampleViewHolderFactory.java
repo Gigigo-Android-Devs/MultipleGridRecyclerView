@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.ViewGroup;
 import com.gigigo.baserecycleradapter.viewholder.BaseViewHolder;
 import com.gigigo.baserecycleradapter.viewholder.BaseViewHolderFactory;
+import com.gigigo.multiplegridrecyclerview.entities.CellBlankElement;
+import com.gigigo.multiplegridrecyclerview.viewholder.CellBlankViewHolder;
 import com.gigigo.multiplegridrecyclerview_demo.recyclerview.CellImageWidget;
 import com.gigigo.multiplegridrecyclerview_demo.recyclerview.ImageWidget;
 import com.gigigo.multiplegridrecyclerview_demo.recyclerview.TextWidget;
@@ -30,6 +32,8 @@ public class SampleViewHolderFactory extends BaseViewHolderFactory {
       return new ImageViewHolder(context, parent);
     } else if (valueClass == TextWidget.class) {
       return new TextViewHolder(context, parent);
+    } else if (valueClass == CellBlankElement.class) {
+      return new CellBlankViewHolder(context, parent);
     } else {
       return super.create(valueClass, parent);
     }
