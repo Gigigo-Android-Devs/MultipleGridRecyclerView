@@ -223,7 +223,7 @@ public class MultipleGridRecyclerView extends FrameLayout {
     detachViewFromParent(this.emptyViewLayout);
     if (emptyViewLayout != null) {
       this.emptyViewLayout = emptyViewLayout;
-      this.emptyViewLayout.setVisibility(GONE);
+      setVisibilityEmptyView(false);
     }
   }
 
@@ -231,7 +231,7 @@ public class MultipleGridRecyclerView extends FrameLayout {
     detachViewFromParent(this.errorViewLayout);
     if (errorViewLayout != null) {
       this.errorViewLayout = errorViewLayout;
-      this.errorViewLayout.setVisibility(GONE);
+      setVisibilityErrorView(false);
     }
   }
 
@@ -296,8 +296,17 @@ public class MultipleGridRecyclerView extends FrameLayout {
   }
 
   public void showRecyclerView() {
-    emptyViewLayout.setVisibility(GONE);
-    recyclerViewLayout.setVisibility(VISIBLE);
+    setVisibilityEmptyView(false);
+    setVisibilityErrorView(false);
+    setVisibilityRecyclerView(true);
+  }
+
+  private void setVisibilityErrorView(boolean visible) {
+    errorViewLayout.setVisibility(visible ? VISIBLE : GONE);
+  }
+
+  private void setVisibilityEmptyView(boolean visible) {
+    emptyViewLayout.setVisibility(visible ? VISIBLE : GONE);
   }
 
   public void showLoadingView(boolean isLoading) {
@@ -306,15 +315,19 @@ public class MultipleGridRecyclerView extends FrameLayout {
   }
 
   public void showEmptyView() {
-    recyclerViewLayout.setVisibility(GONE);
-    errorViewLayout.setVisibility(GONE);
-    emptyViewLayout.setVisibility(VISIBLE);
+    setVisibilityRecyclerView(false);
+    setVisibilityErrorView(false);
+    setVisibilityEmptyView(true);
+  }
+
+  private void setVisibilityRecyclerView(boolean visible) {
+    recyclerViewLayout.setVisibility(visible ? VISIBLE : GONE);
   }
 
   public void showErrorView() {
-    recyclerViewLayout.setVisibility(GONE);
-    emptyViewLayout.setVisibility(GONE);
-    errorViewLayout.setVisibility(VISIBLE);
+    setVisibilityRecyclerView(false);
+    setVisibilityEmptyView(false);
+    setVisibilityErrorView(true);
   }
 
   public void setClipToPaddingSize(int clipToPaddingSize) {
