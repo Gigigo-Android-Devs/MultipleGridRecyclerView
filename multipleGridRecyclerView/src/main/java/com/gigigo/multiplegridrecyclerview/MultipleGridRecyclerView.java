@@ -3,6 +3,8 @@ package com.gigigo.multiplegridrecyclerview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DimenRes;
 import android.support.annotation.IdRes;
@@ -94,8 +96,8 @@ public class MultipleGridRecyclerView extends FrameLayout {
       dividerColor =
           a.getColor(R.styleable.MultipleGridRecyclerView_divider_color, DEFAULT_DIVIDER_COLOR);
 
-      blankBackgroundColor =
-          a.getColor(R.styleable.MultipleGridRecyclerView_blank_background_color, DEFAULT_BLANK_COLOR);
+      blankBackgroundColor = a.getColor(R.styleable.MultipleGridRecyclerView_blank_background_color,
+          DEFAULT_BLANK_COLOR);
 
       loadingResourceId = a.getResourceId(R.styleable.MultipleGridRecyclerView_loading_view_layout,
           DEFAULT_LOADING_VIEW_RESOURCE);
@@ -192,7 +194,9 @@ public class MultipleGridRecyclerView extends FrameLayout {
 
   private void initItemDecoration() {
     undecoratedClassViewHolder = new ArrayList<>();
-    recyclerView.addItemDecoration(new GridItemDividerDecoration(dividerSize, dividerColor, blankBackgroundColor, undecoratedClassViewHolder));
+    recyclerView.addItemDecoration(
+        new GridItemDividerDecoration(dividerSize, dividerColor, blankBackgroundColor,
+            undecoratedClassViewHolder));
   }
 
   public int getGridColumns() {
@@ -342,4 +346,13 @@ public class MultipleGridRecyclerView extends FrameLayout {
   public interface OnRefreshListener {
     void onRefresh();
   }
+
+  public Parcelable onSaveInstanceState() {
+    return layoutManager.onSaveInstanceState();
+  }
+
+  public void onRestoreInstanceState(Bundle bundle) {
+    layoutManager.onRestoreInstanceState(bundle);
+  }
 }
+
