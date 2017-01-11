@@ -351,7 +351,7 @@ public class MultipleGridRecyclerView extends FrameLayout {
     return layoutManager.onSaveInstanceState();
   }
 
-  public void onRestoreInstanceState(Bundle bundle) {
+  public void onRestoreInstanceState(Parcelable bundle) {
     layoutManager.onRestoreInstanceState(bundle);
   }
 }
