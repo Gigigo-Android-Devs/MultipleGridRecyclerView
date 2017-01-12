@@ -347,6 +347,18 @@ public class MultipleGridRecyclerView extends FrameLayout {
     recyclerView.addOnScrollListener(onScrollListener);
   }
 
+  public void setScrollToPosition(int position) {
+    recyclerView.scrollToPosition(position);
+  }
+
+  public void setScrollTo(int dy) {
+    recyclerView.scrollBy(0, dy);
+  }
+
+  public int getItemCount() {
+    return adapter.getItemCount();
+  }
+
   public interface OnRefreshListener {
     void onRefresh();
   }
