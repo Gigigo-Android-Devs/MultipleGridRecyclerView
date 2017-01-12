@@ -1,12 +1,12 @@
 allprojects {
   ext {
-    libraries = [androidSupportV7      : 'com.android.support:appcompat-v7:23.3.0',
-                 androidSupportDesign  : 'com.android.support:design:23.3.0',
-                 recyclerViewV7        : 'com.android.support:recyclerview-v7:23.3.0',
+    libraries = [androidSupportV7      : 'com.android.support:appcompat-v7:24.2.1',
+                 androidSupportDesign  : 'com.android.support:design:24.2.1',
+                 recyclerViewV7        : 'com.android.support:recyclerview-v7:24.2.1',
                  constraintLayout      : 'com.android.support.constraint:constraint-layout:1.0.0-alpha1',
 
-                 imageloaderGlide      : 'com.github.Gigigo-Android-Devs.gigigo-imageLoader-library-android:imageloader-glide:v1.0',
-                 baserecycleradapter   : 'com.github.Gigigo-Android-Devs:gigigo-baseRecyclerAdapter-library-android:v1.4.2',
+                 imageloaderGlide      : 'com.github.Gigigo-Android-Devs.gigigo-imageLoader-library-android:imageloader-glide:1.1',
+                 baserecycleradapter   : 'com.github.Gigigo-Android-Devs:gigigo-baseRecyclerAdapter-library-android:1.4.3',
 
                  butterknife           : 'com.jakewharton:butterknife:8.4.0',
                  okHttp                : 'com.squareup.okhttp3:okhttp:3.4.1',
