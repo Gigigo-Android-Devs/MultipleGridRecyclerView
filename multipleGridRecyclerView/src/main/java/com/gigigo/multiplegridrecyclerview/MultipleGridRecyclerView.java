@@ -343,6 +343,10 @@ public class MultipleGridRecyclerView extends FrameLayout {
     layoutManager.scrollToPosition(0);
   }
 
+  public void setOnScrollListener(RecyclerView.OnScrollListener onScrollListener) {
+    recyclerView.addOnScrollListener(onScrollListener);
+  }
+
   public interface OnRefreshListener {
     void onRefresh();
   }
