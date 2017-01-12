@@ -3,6 +3,8 @@ package com.gigigo.multiplegridrecyclerview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DimenRes;
 import android.support.annotation.IdRes;
@@ -94,8 +96,8 @@ public class MultipleGridRecyclerView extends FrameLayout {
       dividerColor =
           a.getColor(R.styleable.MultipleGridRecyclerView_divider_color, DEFAULT_DIVIDER_COLOR);
 
-      blankBackgroundColor =
-          a.getColor(R.styleable.MultipleGridRecyclerView_blank_background_color, DEFAULT_BLANK_COLOR);
+      blankBackgroundColor = a.getColor(R.styleable.MultipleGridRecyclerView_blank_background_color,
+          DEFAULT_BLANK_COLOR);
 
       loadingResourceId = a.getResourceId(R.styleable.MultipleGridRecyclerView_loading_view_layout,
           DEFAULT_LOADING_VIEW_RESOURCE);
@@ -192,7 +194,9 @@ public class MultipleGridRecyclerView extends FrameLayout {
 
   private void initItemDecoration() {
     undecoratedClassViewHolder = new ArrayList<>();
-    recyclerView.addItemDecoration(new GridItemDividerDecoration(dividerSize, dividerColor, blankBackgroundColor, undecoratedClassViewHolder));
+    recyclerView.addItemDecoration(
+        new GridItemDividerDecoration(dividerSize, dividerColor, blankBackgroundColor,
+            undecoratedClassViewHolder));
   }
 
   public int getGridColumns() {
@@ -223,7 +227,7 @@ public class MultipleGridRecyclerView extends FrameLayout {
     detachViewFromParent(this.emptyViewLayout);
     if (emptyViewLayout != null) {
       this.emptyViewLayout = emptyViewLayout;
-      this.emptyViewLayout.setVisibility(GONE);
+      setVisibilityEmptyView(false);
     }
   }
 
@@ -231,7 +235,7 @@ public class MultipleGridRecyclerView extends FrameLayout {
     detachViewFromParent(this.errorViewLayout);
     if (errorViewLayout != null) {
       this.errorViewLayout = errorViewLayout;
-      this.errorViewLayout.setVisibility(GONE);
+      setVisibilityErrorView(false);
     }
   }
 
@@ -296,8 +300,17 @@ public class MultipleGridRecyclerView extends FrameLayout {
   }
 
   public void showRecyclerView() {
-    emptyViewLayout.setVisibility(GONE);
-    recyclerViewLayout.setVisibility(VISIBLE);
+    setVisibilityEmptyView(false);
+    setVisibilityErrorView(false);
+    setVisibilityRecyclerView(true);
+  }
+
+  private void setVisibilityErrorView(boolean visible) {
+    errorViewLayout.setVisibility(visible ? VISIBLE : GONE);
+  }
+
+  private void setVisibilityEmptyView(boolean visible) {
+    emptyViewLayout.setVisibility(visible ? VISIBLE : GONE);
   }
 
   public void showLoadingView(boolean isLoading) {
@@ -306,15 +319,19 @@ public class MultipleGridRecyclerView extends FrameLayout {
   }
 
   public void showEmptyView() {
-    recyclerViewLayout.setVisibility(GONE);
-    errorViewLayout.setVisibility(GONE);
-    emptyViewLayout.setVisibility(VISIBLE);
+    setVisibilityRecyclerView(false);
+    setVisibilityErrorView(false);
+    setVisibilityEmptyView(true);
+  }
+
+  private void setVisibilityRecyclerView(boolean visible) {
+    recyclerViewLayout.setVisibility(visible ? VISIBLE : GONE);
   }
 
   public void showErrorView() {
-    recyclerViewLayout.setVisibility(GONE);
-    emptyViewLayout.setVisibility(GONE);
-    errorViewLayout.setVisibility(VISIBLE);
+    setVisibilityRecyclerView(false);
+    setVisibilityEmptyView(false);
+    setVisibilityErrorView(true);
   }
 
   public void setClipToPaddingSize(int clipToPaddingSize) {
@@ -326,7 +343,12 @@ public class MultipleGridRecyclerView extends FrameLayout {
     layoutManager.scrollToPosition(0);
   }
 
+  public void setOnScrollListener(RecyclerView.OnScrollListener onScrollListener) {
+    recyclerView.addOnScrollListener(onScrollListener);
+  }
+
   public interface OnRefreshListener {
     void onRefresh();
   }
 }
+
