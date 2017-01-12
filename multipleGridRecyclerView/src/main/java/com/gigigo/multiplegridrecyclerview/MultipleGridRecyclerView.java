@@ -346,13 +346,5 @@ public class MultipleGridRecyclerView extends FrameLayout {
   public interface OnRefreshListener {
     void onRefresh();
   }
-
-  public Parcelable onSaveInstanceState() {
-    return layoutManager.onSaveInstanceState();
-  }
-
-  public void onRestoreInstanceState(Parcelable bundle) {
-    layoutManager.onRestoreInstanceState(bundle);
-  }
 }
 
