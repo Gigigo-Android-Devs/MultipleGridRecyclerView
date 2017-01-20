@@ -1,4 +1,7 @@
 # MultipleGridRecyclerView
+[![Build Status](https://travis-ci.org/Gigigo-Android-Devs/gigigo-multipleGridRecyclerView-library-android.svg?branch=master)](https://travis-ci.org/Gigigo-Android-Devs/gigigo-multipleGridRecyclerView-library-android.svg?branch=master)
+[![](https://jitpack.io/v/Gigigo-Android-Devs/gigigo-multipleGridRecyclerView-library-android.svg)](https://jitpack.io/#Gigigo-Android-Devs/gigigo-multipleGridRecyclerView-library-android)
+
 RecyclerView + GridLayout multiple cells types + empty view + swipe to refresh in a CustomView
 
 <img src="./screenshots/1.gif" width="50%" />
