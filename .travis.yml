@@ -6,9 +6,12 @@ env:
   - ANDROID_ABI=armeabi-v7a
 android:
   components:
-    - build-tools-23.0.0
-    - android-23
-    - extra-android-support
-    - extra-google-m2repository
-    - sys-img-armeabi-v7a-android-23
-    - extra-android-m2repository
+  - build-tools-23.0.0
+  - android-23
+  - extra-android-support
+  - extra-google-m2repository
+  - sys-img-armeabi-v7a-android-23
+  - extra-android-m2repository
+notifications:
+  slack:
+    secure: O/5cHdrh/1t+DXx7T9tC4QK/e+RKx5KeGiPHuK1v4k7YSg8eqPJzlXQKqBHlr2oN2tlcGLHQ2TVKrLfdQHdcqnLDVanqcCisdf3kW8+LbW3evpop5KkRGQ6LPxPNRqQqu5v9X/4lETBpblaf3Lf/Nce2l09koEpKhrW2fuEwrgYGn26XF21G9aE42VwaEOfBrOHItcERWlhglHDoZv44napVTtKAUq9ge0wzsBs2aUvqEQHawCKGBzjeQ56d1dHs/d/OjrCmie3KHtPSGb+3ZCYXJa2RvO9WumCPEpw6ZcHPmtgafdXa0hl509YyTG0GUbrJPdz5F+nCVtlcMH7CTVLRokOUc8vYJR36KdsPEOeHCz4qto5JkUsSl9Hu6O4w2K25J/5NDxvDPw4MPwCbBDMj+haOnD63jKrqAcmIxTob8zx8kPD1w72ai3Ps3yRHkA9532plWPYTPtNFVifX5xprMgpRhJBC1PJOESb1YBni9u/nE2lOUQolVbw9IGJLo/aLahaEVIDthaoSyc1f2eYyHbK8UA1QW1ce2x677ECgBaCZvDii6Mb4BzBP+vRsn8slcn0nCs55arEh3TYy1+HggugTSLg/P++k3n7vA+cWoxsYeQvEBTa6sR1yil25DHZ8hscdK4hlABQds4T42YPgE2fjnmLIYnwVdV8kIeU=
