@@ -1,1 +1,1 @@
-include ':app', ':multipleGridRecyclerView'
+include ':multipleGridRecyclerView' //, ':app'
