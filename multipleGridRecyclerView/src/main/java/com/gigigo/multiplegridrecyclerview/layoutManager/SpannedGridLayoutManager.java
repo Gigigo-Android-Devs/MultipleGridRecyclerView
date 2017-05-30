@@ -33,10 +33,6 @@ import com.gigigo.multiplegridrecyclerview.R;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A {@link RecyclerView.LayoutManager} which displays a regular grid (i.e. all cells are the same
- * size) and allows simultaneous row & column spanning.
- */
 public class SpannedGridLayoutManager extends RecyclerView.LayoutManager {
 
     private GridSpanLookup spanLookup;
@@ -150,6 +146,10 @@ public class SpannedGridLayoutManager extends RecyclerView.LayoutManager {
         int row = firstVisibleRow;
         int availableSpace = getHeight() - scrollOffset;
         int lastItemPosition = state.getItemCount() - 1;
+        if (lastVisiblePosition == 0 && lastItemPosition == 0) {
+            availableSpace -= layoutRow(row, startTop, recycler, state);
+            row = getNextSpannedRow(row);
+        }
         while (availableSpace > 0 && lastVisiblePosition < lastItemPosition) {
             availableSpace -= layoutRow(row, startTop, recycler, state);
             row = getNextSpannedRow(row);
@@ -201,7 +201,7 @@ public class SpannedGridLayoutManager extends RecyclerView.LayoutManager {
     }
 
     @Override
-    public int scrollVerticallyBy(int dy, RecyclerView.Recycler recycler, RecyclerView.State state){
+    public int scrollVerticallyBy(int dy, RecyclerView.Recycler recycler, RecyclerView.State state) {
         if (getChildCount() == 0 || dy == 0) return 0;
 
         int scrolled;
@@ -235,7 +235,7 @@ public class SpannedGridLayoutManager extends RecyclerView.LayoutManager {
             } else {
                 scrolled = dy;
             }
-            if ((bottom - scrolled) < getHeight()) { // new row scrolled in
+            if ((bottom - scrolled) < getHeight() && lastVisibleRow != 0) { // new row scrolled in
                 int nextRow = lastVisibleRow + 1;
                 if (nextRow < getSpannedRowCount()) {
                     int startOffset = top - (firstVisibleRow * cellHeight);
@@ -255,15 +255,13 @@ public class SpannedGridLayoutManager extends RecyclerView.LayoutManager {
 
     @Override
     public void scrollToPosition(int position) {
-        if(getItemCount() > 0) {
-            if (position >= getItemCount()) position = getItemCount() - 1;
+        if (position >= getItemCount()) position = getItemCount() - 1;
 
-            firstVisibleRow = getRowIndex(position);
-            resetVisibleItemTracking();
-            forceClearOffsets = true;
-            removeAllViews();
-            requestLayout();
-        }
+        firstVisibleRow = getRowTopIndex(position);
+        resetVisibleItemTracking();
+        forceClearOffsets = true;
+        removeAllViews();
+        requestLayout();
     }
 
     @Override
@@ -274,7 +272,7 @@ public class SpannedGridLayoutManager extends RecyclerView.LayoutManager {
         LinearSmoothScroller scroller = new LinearSmoothScroller(recyclerView.getContext()) {
             @Override
             public PointF computeScrollVectorForPosition(int targetPosition) {
-                final int rowOffset = getRowIndex(targetPosition) - firstVisibleRow;
+                final int rowOffset = getRowTopIndex(targetPosition) - firstVisibleRow;
                 return new PointF(0, rowOffset * cellHeight);
             }
         };
@@ -345,7 +343,7 @@ public class SpannedGridLayoutManager extends RecyclerView.LayoutManager {
 
             SpanInfo spanInfo;
             int adapterPosition = recycler.convertPreLayoutPositionToPostLayout(position);
-            if (adapterPosition !=  RecyclerView.NO_POSITION) {
+            if (adapterPosition != RecyclerView.NO_POSITION) {
                 spanInfo = spanLookup.getSpanInfo(adapterPosition);
             } else {
                 // item removed from adapter, retrieve its previous span info
@@ -426,8 +424,25 @@ public class SpannedGridLayoutManager extends RecyclerView.LayoutManager {
         }
     }
 
-    private int getRowIndex(final int position) {
-        return (position > -1 && position < cells.size()) ? cells.get(position).row : -1;
+    private int getRowTopIndex(final int position) {
+        if (position < cells.size()) {
+            GridCell gridCell = cells.get(position);
+            return gridCell.row;
+        } else {
+            return -1;
+        }
+    }
+
+    /**
+     * Takes rowSpan in consideration
+     */
+    private int getRowBottomIndex(final int position) {
+        if (position < cells.size()) {
+            GridCell gridCell = cells.get(position);
+            return gridCell.row - 1 + gridCell.rowSpan;
+        } else {
+            return -1;
+        }
     }
 
     private int getSpannedRowCount() {
@@ -498,11 +513,11 @@ public class SpannedGridLayoutManager extends RecyclerView.LayoutManager {
 
         if (firstPositionInRow < firstVisiblePosition) {
             firstVisiblePosition = firstPositionInRow;
-            firstVisibleRow = getRowIndex(firstVisiblePosition);
+            firstVisibleRow = getRowTopIndex(firstVisiblePosition);
         }
         if (lastPositionInRow > lastVisiblePosition) {
             lastVisiblePosition = lastPositionInRow;
-            lastVisibleRow = getRowIndex(lastVisiblePosition);
+            lastVisibleRow = getRowBottomIndex(lastVisiblePosition);
         }
         if (containsRemovedItems) return 0; // don't consume space for rows with disappearing items
 
@@ -527,11 +542,11 @@ public class SpannedGridLayoutManager extends RecyclerView.LayoutManager {
         }
         if (rowIndex == firstVisibleRow) {
             firstVisiblePosition = lastPositionInRow + 1;
-            firstVisibleRow = getRowIndex(firstVisiblePosition);
+            firstVisibleRow = getRowTopIndex(firstVisiblePosition);
         }
         if (rowIndex == lastVisibleRow) {
             lastVisiblePosition = firstPositionInRow - 1;
-            lastVisibleRow = getRowIndex(lastVisiblePosition);
+            lastVisibleRow = getRowBottomIndex(lastVisiblePosition);
         }
     }
 
@@ -574,7 +589,7 @@ public class SpannedGridLayoutManager extends RecyclerView.LayoutManager {
         if (totalRows < maxDisplayedRows) return 0;
         int minFirstRow = totalRows - maxDisplayedRows;
         // adjust to spanned rows
-        return getRowIndex(getFirstPositionInSpannedRow(minFirstRow));
+        return getRowTopIndex(getFirstPositionInSpannedRow(minFirstRow));
     }
 
     /* Adapted from GridLayoutManager */
