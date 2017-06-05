@@ -340,7 +340,9 @@ public class MultipleGridRecyclerView extends FrameLayout {
   }
 
   public void scrollToTop() {
-    layoutManager.scrollToPosition(0);
+    if (layoutManager != null && layoutManager.getChildCount() > 0) {
+      layoutManager.scrollToPosition(0);
+    }
   }
 
   public void setOnScrollListener(RecyclerView.OnScrollListener onScrollListener) {
