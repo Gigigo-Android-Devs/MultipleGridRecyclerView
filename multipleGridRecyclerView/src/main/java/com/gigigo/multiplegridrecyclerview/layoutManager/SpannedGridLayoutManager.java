@@ -425,7 +425,7 @@ public class SpannedGridLayoutManager extends RecyclerView.LayoutManager {
     }
 
     private int getRowTopIndex(final int position) {
-        if (position < cells.size()) {
+        if (cells != null && position < cells.size()) {
             GridCell gridCell = cells.get(position);
             return gridCell.row;
         } else {
