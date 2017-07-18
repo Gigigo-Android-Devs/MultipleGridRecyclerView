@@ -6,7 +6,7 @@ allprojects {
                  constraintLayout      : 'com.android.support.constraint:constraint-layout:1.0.0-alpha1',
 
                  imageloaderGlide      : 'com.github.Gigigo-Android-Devs.gigigo-imageLoader-library-android:imageloader-glide:1.1',
-                 baserecycleradapter   : 'com.github.Gigigo-Android-Devs:gigigo-baseRecyclerAdapter-library-android:1.4.6',
+                 baserecycleradapter   : 'com.github.Gigigo-Android-Devs:gigigo-baseRecyclerAdapter-library-android:1.4.8',
 
                  butterknife           : 'com.jakewharton:butterknife:8.4.0',
                  okHttp                : 'com.squareup.okhttp3:okhttp:3.4.1',

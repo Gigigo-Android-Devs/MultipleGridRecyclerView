@@ -195,6 +195,7 @@ public class MainActivity extends AppCompatActivity {
     setAdapterDataViewHolders();
 
     multipleGridRecyclerView.setUndecoratedViewHolder(ImageViewHolder.class);
+    multipleGridRecyclerView.setMillis(1500);
 
     multipleGridRecyclerView.setOnRefreshListener(new MultipleGridRecyclerView.OnRefreshListener() {
       @Override public void onRefresh() {

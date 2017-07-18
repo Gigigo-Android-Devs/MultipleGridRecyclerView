@@ -3,8 +3,6 @@ package com.gigigo.multiplegridrecyclerview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DimenRes;
 import android.support.annotation.IdRes;
@@ -359,6 +357,12 @@ public class MultipleGridRecyclerView extends FrameLayout {
 
   public int getItemCount() {
     return adapter.getItemCount();
+  }
+
+  public void setMillis(int millisIntervalToAvoidDoubleClick) {
+    if (adapter != null) {
+      adapter.setMillisIntervalToAvoidDoubleClick(millisIntervalToAvoidDoubleClick);
+    }
   }
 
   public interface OnRefreshListener {
