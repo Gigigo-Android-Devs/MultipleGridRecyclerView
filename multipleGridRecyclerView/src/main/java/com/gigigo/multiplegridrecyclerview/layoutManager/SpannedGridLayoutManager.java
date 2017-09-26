@@ -460,6 +460,9 @@ public class SpannedGridLayoutManager extends RecyclerView.LayoutManager {
     }
 
     private int getFirstPositionInSpannedRow(int rowIndex) {
+        if (firstChildPositionForRow == null || rowIndex >= firstChildPositionForRow.size()) {
+            return 0;
+        }
         return firstChildPositionForRow.get(rowIndex);
     }
 
