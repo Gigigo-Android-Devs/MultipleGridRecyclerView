@@ -18,6 +18,7 @@ import com.gigigo.baserecycleradapter.viewholder.BaseViewHolderFactory;
 import com.gigigo.multiplegridrecyclerview.decoration.GridItemDividerDecoration;
 import com.gigigo.multiplegridrecyclerview.entities.Cell;
 import com.gigigo.multiplegridrecyclerview.layoutManager.SpannedGridLayoutManager;
+import com.gigigo.multiplegridrecyclerview.recyclerview.CustomRecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class MultipleGridRecyclerView extends FrameLayout {
   private View loadingViewLayout;
 
   private SwipeRefreshLayout swipeRefreshLayout;
-  private RecyclerView recyclerView;
+  private CustomRecyclerView recyclerView;
   private BaseRecyclerAdapter adapter;
   private List<Class<? extends BaseViewHolder>> undecoratedClassViewHolder;
   private RecyclerView.LayoutManager layoutManager;
@@ -53,6 +54,8 @@ public class MultipleGridRecyclerView extends FrameLayout {
   private @IdRes int errorResourceId = DEFAULT_ERROR_VIEW_RESOURCE;
 
   private OnRefreshListener refreshListener;
+  private float deltaX;
+  private float deltaY;
 
   public MultipleGridRecyclerView(Context context) {
     super(context);
@@ -117,7 +120,7 @@ public class MultipleGridRecyclerView extends FrameLayout {
     loadingViewLayout = view.findViewById(loadingResourceId);
     emptyViewLayout = view.findViewById(emptyResourceId);
     errorViewLayout = view.findViewById(errorResourceId);
-    recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+    recyclerView = (CustomRecyclerView) view.findViewById(R.id.recycler_view);
 
     recyclerView.setAdapter(adapter);
 
@@ -134,6 +137,9 @@ public class MultipleGridRecyclerView extends FrameLayout {
         swipeRefreshLayout.setEnabled(topRowVerticalPosition >= 0);
       }
     });
+
+    overrideScollingVelocityX(deltaX);
+    overrideScollingVelocityY(deltaY);
   }
 
   private void initRefreshLayout() {
@@ -362,6 +368,22 @@ public class MultipleGridRecyclerView extends FrameLayout {
   public void setMillis(int millisIntervalToAvoidDoubleClick) {
     if (adapter != null) {
       adapter.setMillisIntervalToAvoidDoubleClick(millisIntervalToAvoidDoubleClick);
+    }
+  }
+
+  public void overrideScollingVelocityX(float deltaX) {
+    this.deltaX = deltaX;
+
+    if (recyclerView != null && deltaX > 0) {
+      recyclerView.overrideScollingVelocityX(deltaX);
+    }
+  }
+
+  public void overrideScollingVelocityY(float deltaY) {
+    this.deltaY = deltaY;
+
+    if (recyclerView != null && deltaY > 0) {
+      recyclerView.overrideScollingVelocityY(deltaY);
     }
   }
 
