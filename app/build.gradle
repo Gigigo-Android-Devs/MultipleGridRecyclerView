@@ -1,16 +1,18 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
   compileSdkVersion rootProject.ext.androidCompileSdkVersion
-  buildToolsVersion rootProject.ext.androidBuildToolsVersion
 
   defaultConfig {
     applicationId "com.gigigo.multiplegridrecyclerview_demo"
     minSdkVersion rootProject.ext.androidMinSdkVersion
     targetSdkVersion rootProject.ext.androidTargetSdkVersion
 
-    versionCode generateVersionCode()
-    versionName generateVersionName(1,3,0)
+    versionCode generateAutoVersionCode()
+    versionName generateVersionName([major:2, minor:0, patch:0])
   }
 
   buildTypes {
@@ -26,13 +28,12 @@ android {
 }
 
 dependencies {
-  compile fileTree(dir: 'libs', include: ['*.jar'])
-  compile rootProject.ext.libraries.androidSupportV7
+  implementation rootProject.ext.libraries.androidSupportV7
 
-  compile rootProject.ext.libraries.floatingactionbutton
-  compile rootProject.ext.libraries.imageloaderGlide
+  implementation rootProject.ext.libraries.floatingactionbutton
+  implementation rootProject.ext.libraries.imageloaderGlide
 
-  compile rootProject.ext.modules.multipleGridRecyclerView
+  implementation rootProject.ext.modules.multipleGridRecyclerView
 
   testCompile rootProject.ext.testLibraries.junit
 }
