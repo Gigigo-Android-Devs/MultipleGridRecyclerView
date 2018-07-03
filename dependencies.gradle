@@ -10,7 +10,8 @@ allprojects {
                  kotlinStdLib          : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}",
 
                  imageloaderGlide      : 'com.github.Gigigo-Android-Devs.gigigo-imageLoader-library-android:imageloader-glide:1.1',
-                 baserecycleradapter   : 'com.github.Gigigo-Android-Devs:gigigo-baseRecyclerAdapter-library-android:2.0RC',
+
+                 baserecycleradapter   : 'com.github.Gigigo-Android-Devs:gigigo-baseRecyclerAdapter-library-android:2.0.1RC',
 
                  butterknife           : 'com.jakewharton:butterknife:8.4.0',
                  okHttp                : 'com.squareup.okhttp3:okhttp:3.4.1',

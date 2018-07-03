@@ -4,4 +4,5 @@
   <color name="bg_empty_list_color">#420b90e9</color>
   <color name="empty_list_text_color">#ffffff</color>
   <color name="transparentAccentColor">#5542A5F5</color>
+  <color name="ggg_multiple_recycler_bg_progress_color">#C0C</color>
 </resources>

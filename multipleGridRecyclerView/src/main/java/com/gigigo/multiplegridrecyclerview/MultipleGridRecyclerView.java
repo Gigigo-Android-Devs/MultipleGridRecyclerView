@@ -3,8 +3,6 @@ package com.gigigo.multiplegridrecyclerview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DimenRes;
 import android.support.annotation.IdRes;
@@ -20,6 +18,7 @@ import com.gigigo.baserecycleradapter.viewholder.BaseViewHolderFactory;
 import com.gigigo.multiplegridrecyclerview.decoration.GridItemDividerDecoration;
 import com.gigigo.multiplegridrecyclerview.entities.Cell;
 import com.gigigo.multiplegridrecyclerview.layoutManager.SpannedGridLayoutManager;
+import com.gigigo.multiplegridrecyclerview.recyclerview.CustomRecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +39,7 @@ public class MultipleGridRecyclerView extends FrameLayout {
   private View loadingViewLayout;
 
   private SwipeRefreshLayout swipeRefreshLayout;
-  private RecyclerView recyclerView;
+  private CustomRecyclerView recyclerView;
   private BaseRecyclerAdapter adapter;
   private List<Class<? extends BaseViewHolder>> undecoratedClassViewHolder;
   private RecyclerView.LayoutManager layoutManager;
@@ -55,6 +54,8 @@ public class MultipleGridRecyclerView extends FrameLayout {
   private @IdRes int errorResourceId = DEFAULT_ERROR_VIEW_RESOURCE;
 
   private OnRefreshListener refreshListener;
+  private float deltaX;
+  private float deltaY;
 
   public MultipleGridRecyclerView(Context context) {
     super(context);
@@ -119,7 +120,7 @@ public class MultipleGridRecyclerView extends FrameLayout {
     loadingViewLayout = view.findViewById(loadingResourceId);
     emptyViewLayout = view.findViewById(emptyResourceId);
     errorViewLayout = view.findViewById(errorResourceId);
-    recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+    recyclerView = (CustomRecyclerView) view.findViewById(R.id.recycler_view);
 
     recyclerView.setAdapter(adapter);
 
@@ -136,6 +137,9 @@ public class MultipleGridRecyclerView extends FrameLayout {
         swipeRefreshLayout.setEnabled(topRowVerticalPosition >= 0);
       }
     });
+
+    overrideScollingVelocityX(deltaX);
+    overrideScollingVelocityY(deltaY);
   }
 
   private void initRefreshLayout() {
@@ -340,7 +344,9 @@ public class MultipleGridRecyclerView extends FrameLayout {
   }
 
   public void scrollToTop() {
-    layoutManager.scrollToPosition(0);
+    if (layoutManager != null && layoutManager.getChildCount() > 0) {
+      layoutManager.scrollToPosition(0);
+    }
   }
 
   public void setOnScrollListener(RecyclerView.OnScrollListener onScrollListener) {
@@ -357,6 +363,28 @@ public class MultipleGridRecyclerView extends FrameLayout {
 
   public int getItemCount() {
     return adapter.getItemCount();
+  }
+
+  public void setMillis(int millisIntervalToAvoidDoubleClick) {
+    if (adapter != null) {
+      adapter.setMillisIntervalToAvoidDoubleClick(millisIntervalToAvoidDoubleClick);
+    }
+  }
+
+  public void overrideScollingVelocityX(float deltaX) {
+    this.deltaX = deltaX;
+
+    if (recyclerView != null && deltaX > 0) {
+      recyclerView.overrideScollingVelocityX(deltaX);
+    }
+  }
+
+  public void overrideScollingVelocityY(float deltaY) {
+    this.deltaY = deltaY;
+
+    if (recyclerView != null && deltaY > 0) {
+      recyclerView.overrideScollingVelocityY(deltaY);
+    }
   }
 
   public interface OnRefreshListener {
